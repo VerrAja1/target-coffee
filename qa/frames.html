@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>QA frames</title>
+    <style>
+      body { margin: 0; background: #2b2b2b; color: #fff; font: 12px/1.4 monospace; }
+      .row { padding: 6px 8px; }
+      .frame { border: 1px solid #000; background: #12100e; overflow: hidden; }
+      .frame iframe { border: 0; display: block; }
+    </style>
+  </head>
+  <body>
+    <div class="row" style="width: 880px">
+      <div>desktop 1440 x 900 (scale .6)</div>
+      <div class="frame" style="width: 864px; height: 540px">
+        <div style="transform: scale(0.6); transform-origin: top left">
+          <iframe src="/" width="1440" height="900" title="desktop"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width: 880px">
+      <div>tablet 768 x 1024 (scale .72)</div>
+      <div class="frame" style="width: 553px; height: 640px">
+        <div style="transform: scale(0.72); transform-origin: top left">
+          <iframe src="/" width="768" height="889" title="tablet"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width: 880px">
+      <div>mobile 390 x 844</div>
+      <div class="frame" style="width: 390px; height: 844px">
+        <iframe src="/" width="390" height="844" title="mobile"></iframe>
+      </div>
+    </div>
+  </body>
+</html>

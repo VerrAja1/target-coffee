@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>QA section</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: #12100e; }
+      #frame { border: 0; display: block; }
+    </style>
+  </head>
+  <body>
+    <iframe id="frame" title="qa" src="/"></iframe>
+    <script>
+      // Headless Chrome screenshots always start at scroll 0, so instead of
+      // scrolling, hide every section above the one under review.
+      const params = new URLSearchParams(location.search)
+      const only = params.get('only') || 'home'
+      const w = Number(params.get('w') || 1440)
+      const h = Number(params.get('h') || 900)
+      const lang = params.get('lang')
+      if (lang) {
+        try { localStorage.setItem('target-coffee-lang', lang) } catch {}
+      }
+      const frame = document.getElementById('frame')
+      frame.width = w
+      frame.height = h
+      frame.style.width = w + 'px'
+      frame.style.height = h + 'px'
+      const apply = () => {
+        const doc = frame.contentDocument
+        if (!doc || !doc.body) return
+        const style = doc.createElement('style')
+        style.textContent = only === 'footer'
+          ? 'main { display: none !important }'
+          : 'main > section { display: none !important } #' + only + ' { display: block !important }'
+        doc.head.appendChild(style)
+      }
+      for (const delay of [100, 400, 900, 1600, 2600]) setTimeout(apply, delay)
+    </script>
+  </body>
+</html>

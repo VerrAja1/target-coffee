@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>QA crop</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: #12100e; overflow: hidden; }
+      #frame { border: 0; display: block; position: absolute; top: 0; left: 0; }
+    </style>
+  </head>
+  <body>
+    <iframe id="frame" title="qa" src="/"></iframe>
+    <script>
+      // The automation window is narrower than the desktop breakpoint, so the
+      // page is laid out at full desktop width in an iframe and shifted left to
+      // bring the panel under review into the visible window.
+      const params = new URLSearchParams(location.search)
+      const only = params.get('only') || 'home'
+      const w = Number(params.get('w') || 1440)
+      const h = Number(params.get('h') || 900)
+      const left = Number(params.get('left') || 0)
+      const offsetY = Number(params.get('top') || 0)
+      const lang = params.get('lang')
+      if (lang) {
+        try { localStorage.setItem('target-coffee-lang', lang) } catch {}
+      }
+      const frame = document.getElementById('frame')
+      frame.width = w
+      frame.height = h
+      frame.style.width = w + 'px'
+      frame.style.height = h + 'px'
+      frame.style.left = -left + 'px'
+      frame.style.top = -offsetY + 'px'
+      const apply = () => {
+        const doc = frame.contentDocument
+        if (!doc || !doc.body) return
+        const style = doc.createElement('style')
+        style.textContent = only === 'footer'
+          ? 'main { display: none !important }'
+          : 'main > section { display: none !important } #' + only + ' { display: block !important }'
+        doc.head.appendChild(style)
+      }
+      for (const delay of [100, 400, 900, 1600, 2600]) setTimeout(apply, delay)
+    </script>
+  </body>
+</html>

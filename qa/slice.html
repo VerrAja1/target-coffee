@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>QA slice</title>
+    <style>
+      html, body { margin: 0; padding: 0; background: #12100e; overflow: hidden; }
+      #frame { border: 0; display: block; width: 100vw; height: 100vh; }
+    </style>
+  </head>
+  <body>
+    <iframe id="frame" title="qa" src="/"></iframe>
+    <script>
+      const params = new URLSearchParams(location.search)
+      const offsetY = Number(params.get('top') || 0)
+      const frame = document.getElementById('frame')
+      if (params.get('lang')) {
+        try { localStorage.setItem('target-coffee-lang', params.get('lang')) } catch {}
+      }
+      const jump = () => {
+        if (!offsetY) return
+        const win = frame.contentWindow
+        if (!win) return
+        win.document.documentElement.style.scrollBehavior = 'auto'
+        win.scrollTo(0, offsetY)
+      }
+      // React paints after load, so retry until the page is tall enough for the
+      // offset to stick. Scheduled from the start: a fast local load can fire
+      // before this script runs.
+      for (const delay of [200, 600, 1200, 2200, 3200]) {
+        setTimeout(jump, delay)
+      }
+    </script>
+  </body>
+</html>
+
